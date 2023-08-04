@@ -1,3 +1,4 @@
+using HotelListing.Configurations;
 using HotelListing.Data;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -24,6 +25,7 @@ builder.Services.AddDbContext<DbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+builder.Services.AddAutoMapper(typeof(MapperInitializer));
 builder.Services.AddSwaggerGen();
 
 
