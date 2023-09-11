@@ -28,7 +28,7 @@ namespace HotelListing.Controllers
             {
                 var countries = await _unitOfWork.Countries.GetAll();
                 var results = _mapper.Map<IList<CountryDTO>>(countries);
-                return Ok(results);
+                return Ok(results); 
             }
             catch (Exception ex) 
             {
