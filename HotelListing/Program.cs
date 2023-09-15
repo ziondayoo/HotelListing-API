@@ -11,7 +11,7 @@ using Serilog;
 
 
 var builder = WebApplication.CreateBuilder(args);
-
+var config = builder.Configuration; 
 
 // Add services to the container.
 
@@ -30,10 +30,11 @@ builder.Services.AddScoped<IAuthManager,  AuthManager>();
 builder.Services.AddCors(o => { o.AddPolicy("AllowAll", builder =>
                    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
                     });
-builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(config.GetConnectionString("DefaultConnection")));
 builder.Services.AddAuthentication();
 builder.Services.ConfigureIdentity();
-//builder.Services.ConfigureJWT(Configuration);
+builder.Services.ConfigureJWT(config);
+
 
 builder.Services.AddControllers().AddNewtonsoftJson(o => o.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 builder.Services.AddAutoMapper(typeof(MapperInitializer));
