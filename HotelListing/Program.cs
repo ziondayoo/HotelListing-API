@@ -33,12 +33,20 @@ builder.Services.AddCors(o => { o.AddPolicy("AllowAll", builder =>
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(config.GetConnectionString("DefaultConnection")));
 builder.Services.AddAuthentication();
 builder.Services.ConfigureIdentity();
+builder.Services.AddResponseCaching();
 builder.Services.ConfigureJWT(config);
 builder.Services.ConfigureVersioning();
 
 
 
-builder.Services.AddControllers().AddNewtonsoftJson(o => o.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+builder.Services.AddControllers(config =>
+{
+    config.CacheProfiles.Add("120SecondsDuration", new Microsoft.AspNetCore.Mvc.CacheProfile
+    {
+        Duration = 120
+    });
+}).AddNewtonsoftJson(o
+    => o.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 builder.Services.AddAutoMapper(typeof(MapperInitializer));
 builder.Services.AddSwaggerGen();
 
@@ -62,6 +70,8 @@ app.UseHttpsRedirection();
 app.UseCors("AllowAll");
 
 app.UseAuthentication();
+app.UseResponseCaching();
+app.UseHttpCacheHeaders();  
 app.UseAuthorization();
 
 
