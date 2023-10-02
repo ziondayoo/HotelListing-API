@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
-
+using AspNetCoreRateLimit;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration; 
@@ -34,6 +34,7 @@ builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(c
 builder.Services.AddAuthentication();
 builder.Services.ConfigureIdentity();
 builder.Services.AddResponseCaching();
+builder.Services.AddMemoryCache();
 builder.Services.ConfigureJWT(config);
 builder.Services.ConfigureVersioning();
 
@@ -73,6 +74,7 @@ app.UseAuthentication();
 app.UseResponseCaching();
 app.UseHttpCacheHeaders();  
 app.UseAuthorization();
+app.UseIpRateLimiting();
 
 
 app.MapControllers();
