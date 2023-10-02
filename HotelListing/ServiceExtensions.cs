@@ -104,6 +104,7 @@ namespace HotelListing
                     Period = "5s"
                 }
             };
+            services.AddMemoryCache();
             services.Configure<IpRateLimitOptions>(opt =>
             {
                 opt.GeneralRules = rateLimitRules;
@@ -111,6 +112,8 @@ namespace HotelListing
             services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
             services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
             services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+            services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
+            services.AddInMemoryRateLimiting();
         }
     }
 }

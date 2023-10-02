@@ -36,7 +36,9 @@ builder.Services.ConfigureIdentity();
 builder.Services.AddResponseCaching();
 builder.Services.AddMemoryCache();
 builder.Services.ConfigureJWT(config);
+builder.Services.ConfigureRateLimiting();
 builder.Services.ConfigureVersioning();
+builder.Services.AddHttpCacheHeaders();
 
 
 
